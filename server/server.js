@@ -7,3 +7,4 @@ app.listen(PORT, ()=> {
     connectToDB();
     console.log(`Server is stated at http://localhost:${PORT}...`);
 });
+

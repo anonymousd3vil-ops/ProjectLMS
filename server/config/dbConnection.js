@@ -14,4 +14,5 @@ const connectToDB = async () => {
     });
 }
 
+
 export default connectToDB;

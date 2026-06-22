@@ -34,6 +34,7 @@ const register = async (req, res, next) => {
             return next(new AppError("User Registration Failed, Try Again.", 400))
         }
     
+        
         //Avatar Uplad System
     
         await user.save();
