@@ -4,11 +4,14 @@ import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
 import userRouter from './routers/user_routers.js';
+import errorMiddleware from './middleware/error_middleware.js';
 dotenv.config();
 
 const app = express();
 
 app.use(express.json());
+
+app.use(express.urlencoded({ extended: true }));
 
 app.use(cookieParser());
 
@@ -28,5 +31,7 @@ app.use('/ping', (req, res) => {
 app.all('/{*splat}', (req, res) => {
     res.status(404).send("OOPS!!, Error 404, Page Not Found!!");
 });
+
+app.use(errorMiddleware);
 
 export default app;
