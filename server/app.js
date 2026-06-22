@@ -2,6 +2,8 @@ import express from 'express';
 import  cors from 'cors';
 import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
+import morgan from 'morgan';
+import userRouter from './routers/user_routers.js';
 dotenv.config();
 
 const app = express();
@@ -15,8 +17,12 @@ app.use(cors({
     credentials: true
 }));
 
+app.use(morgan('dev'));
+
+app.use('/api/v1/user', userRouter)
+
 app.use('/ping', (req, res) => {
-    res.send('/pong');
+    res.send('Ping Pong Server is Running!!');
 });
 
 app.all('/{*splat}', (req, res) => {
