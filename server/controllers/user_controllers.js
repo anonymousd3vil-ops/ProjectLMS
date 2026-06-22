@@ -58,7 +58,7 @@ const register = async (req, res, next) => {
 
 };
 
-const login = async (req, res) => {
+const login = async (req, res, next) => {
 
     try{
         const {email, password} = req.body;
@@ -68,7 +68,7 @@ const login = async (req, res) => {
         }
     
         const user = await User.findOne({email}).select('+password');
-    
+
         if(!user || !(await user.comaparePassword(password))){
             return next(new AppError("Email or Password Doesn't Matched!!", 400));
         }
@@ -94,10 +94,34 @@ const login = async (req, res) => {
 };
 
 const logout = (req, res) => {
+    res.cookie('token', null, {
+        secure: true,
+        maxAge: 0,
+        httpOnly: true
+    });
 
+    res.status(200).json({
+        success: true,
+        message: 'User Logged out Successfully!!'
+    });
 };
 
-const getProfile = (req, res) => {
+const getProfile = async (req, res, next) => {
+
+    try{
+        const userId = req.user.id;
+    
+        const user = await User.findById(userId);
+    
+        res.status(200).json({
+            success: true,
+            message: 'User Ditails',
+            user
+        });
+
+    }catch(err){
+        return next(new AppError("Failed to get Profile!!", 500));
+    }
 
 };
 
