@@ -54,7 +54,8 @@ const register = async (req, res, next) => {
                         user.avatar.secure_url = result.secure_url;
 
                         //remove file from server, because it is stored on the third party server
-                        fs.rm(`uploads/${req.file.filename}`);
+                        // fs.rm(`uploads/${req.file.filename}`);
+                        await fs.promises.rm(`uploads/${req.file.filename}`);
                     }
 
             }catch(err){
