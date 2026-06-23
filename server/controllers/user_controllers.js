@@ -1,5 +1,7 @@
 import AppError from "../untils/error_utils.js";
-import User from '../models/user_Schema.js'
+import User from '../models/user_Schema.js';
+import cloudinary from 'cloudinary';
+import fs from 'fs';
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000, //7 days
@@ -36,6 +38,30 @@ const register = async (req, res, next) => {
     
         
         //Avatar Uplad System
+        if(req.file){
+            console.log(req.file);
+            try{
+                    const result = await cloudinary.v2.uploader.upload(req.file.path, {
+                        folder: 'lms',
+                        width: 250,
+                        height: 250,
+                        gravity: 'faces',
+                        crop: 'fill'
+                    })
+
+                    if(result){
+                        user.avatar.public_id = result.public_id;
+                        user.avatar.secure_url = result.secure_url;
+
+                        //remove file from server, because it is stored on the third party server
+                        fs.rm(`uploads/${req.file.filename}`);
+                    }
+
+            }catch(err){
+                console.log("Error in Avatar Upload: ", err.message);
+                return(new AppError("Profile Picture Upload Unsuccessfull..", 500));
+            }
+        }
     
         await user.save();
     
