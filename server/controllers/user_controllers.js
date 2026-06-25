@@ -2,6 +2,8 @@ import AppError from "../untils/error_utils.js";
 import User from '../models/user_Schema.js';
 import cloudinary from 'cloudinary';
 import fs from 'fs';
+import sendEmail from '../untils/sendEmail.js';
+import crypto from 'crypto';
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000, //7 days
@@ -28,7 +30,7 @@ const register = async (req, res, next) => {
             password,
             avatar: {
                 public_id: email,
-                secure_url: 'https://res.cloudinary.com'
+                secure_url: 'https://res.cloudinary.com/notavailable'
             }
         });
     
@@ -38,6 +40,7 @@ const register = async (req, res, next) => {
     
         
         //Avatar Uplad System
+
         if(req.file){
             console.log(req.file);
             try{
@@ -152,5 +155,111 @@ const getProfile = async (req, res, next) => {
 
 };
 
+const forgotPassword = async(req, res, next) => {
+    const {email} = req.body;
 
-export {register, login, logout, getProfile};
+    if(!email){
+        return next(new AppError("Email is Required", 400));
+    }
+
+    const user = await User.findOne({email});
+    if(!user){
+        return next(new AppError("Email is not Registered", 400));
+    }
+
+    const resetToken = await user.generatePasswordResetToken();
+    await user.save();
+
+    const resetPasswordURL = `${process.env.FRONTEND_URL}/api/v1/user/reset/${resetToken}`;
+
+    const subject = "Reset Password Link!!";
+    const message = `Your Reset Password Link is ${resetPasswordURL}`;
+
+    try{
+        await sendEmail(email, subject, message);
+        res.status(200).json({
+            success: true,
+            message:`Reset Password link has been sent to ${email} Successfully!!`
+        })
+        console.log(message);
+    }catch(err){
+        user.forgotPasswordExpiry = undefined;
+        user.forgotPasswordToken = undefined;
+
+        await user.save();
+        return next(new AppError(`Email Sending Unsuccessfull: ${err.message}`));
+    }
+}
+
+const resetPassword = async(req, res, next) => {
+    const {resetToken} = req.params;
+
+    const {password} = req.body;
+
+    const forgotPasswordToken = crypto
+        .createHash('sha256')
+        .update(resetToken)
+        .digest('hex');
+
+    const user = await User.findOne({
+        forgotPasswordToken,
+        forgotPasswordExpiry: {$gt: Date.now()}
+    });
+
+    if(!user){
+        return next(new AppError("Token is Expired, Please Get new Reset Email!!", 400));
+    }
+
+    user.password = password;
+    user.forgotPasswordToken = undefined;
+    user.forgotPasswordExpiry = undefined;
+
+    user.save();
+
+    res.status(200).json({
+        success: true,
+        message: "Password Reset Successfull!!"
+    })
+}
+
+const changePassword = async (req, res, next) => {
+    const {oldPassword, newPassword} = req.body;
+
+    const {id} = req.user;
+
+    if(!oldPassword || !newPassword){
+        return next( new AppError("Old Password and New Password are Mandetaory!!", 400));
+    }
+
+    const user = await User.findById(id).select('+password');
+
+    if(!user){
+        return next( new AppError("User doesn't Exists!!", 400));
+    }
+
+    const isPasswordValid = await user.comaparePassword(oldPassword);
+
+    if(!isPasswordValid){
+        return next( new AppError("Old Password is Incorrect!!", 400));
+    }
+
+    user.password = newPassword;
+
+    await user.save(); 
+
+    user.password = undefined;
+
+    res.status(200).json({
+        success: true,
+        message: "Password Changed Succesfully!!"
+    });
+}
+
+export {register, 
+        login, 
+        logout, 
+        getProfile, 
+        forgotPassword, 
+        resetPassword, 
+        changePassword
+    };
