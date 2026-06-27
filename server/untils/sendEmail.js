@@ -6,7 +6,7 @@ import e from "express";
 
 const sendEmail = async function (email, subject, message) {
   //create reusable transporter object using the default SMTP transport
-
+  
   let transporter = nodemailer.createTransport(
     MailtrapTransport({
       token: process.env.MAILTRAP_TRANSPORT_TOKEN,
@@ -15,7 +15,7 @@ const sendEmail = async function (email, subject, message) {
 
   //send email with defined transport object
   const sender = {
-    address: "hello@demomailtrap.co",
+    address: "resetpass@demomailtrap.co",
     name: "Project LMS",
   };
 

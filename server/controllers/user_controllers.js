@@ -4,6 +4,7 @@ import cloudinary from 'cloudinary';
 import fs from 'fs';
 import sendEmail from '../untils/sendEmail.js';
 import crypto from 'crypto';
+import { constants } from "zlib";
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000, //7 days
@@ -42,7 +43,7 @@ const register = async (req, res, next) => {
         //Avatar Uplad System
 
         if(req.file){
-            console.log(req.file);
+            // console.log(req.file);
             try{
                     const result = await cloudinary.v2.uploader.upload(req.file.path, {
                         folder: 'lms',
@@ -142,7 +143,9 @@ const getProfile = async (req, res, next) => {
         const userId = req.user.id;
     
         const user = await User.findById(userId);
-    
+        
+        user.forgotPasswordExpiry = undefined;
+        user.forgotPasswordToken = undefined;
         res.status(200).json({
             success: true,
             message: 'User Ditails',
@@ -255,11 +258,60 @@ const changePassword = async (req, res, next) => {
     });
 }
 
+const updateUser = async (req, res, next) => {
+    const {fullName} = req.body;
+
+    const {id} = req.user.id;
+
+    const user = await User.findById(id);
+
+    if(!user){
+        return next(new AppError("User Dosen't Exists!!", 400));
+    }
+
+    if(req.fullName){
+        user.fullName = fullName;
+    }
+
+    if(req.file){
+        await cloudinary.v2.uploader.destroy(user.avatr.public_id);
+
+        try{
+            const result = await cloudinary.v2.uploader.upload(req.file.path, {
+                folder: 'lms',
+                width: 250,
+                height: 250,
+                gravity: 'faces',
+                crop: 'fill'
+            })
+        
+            if(result){
+                user.avatar.public_id = result.public_id;
+                user.avatar.secure_url = result.secure_url;
+                
+                //remove file from server, because it is stored on the third party server
+                // fs.rm(`uploads/${req.file.filename}`);
+                await fs.promises.rm(`uploads/${req.file.filename}`);
+            }
+
+        }catch(err){
+            console.log("Error in Avatar Upload: ", err.message);
+            return(new AppError("Profile Picture Upload Unsuccessfull..", 500));
+        }
+    }
+    await user.save();
+    res.status(200).json({
+        success: true,
+        message: 'User Details Updated Succesfull!!'
+    })
+}
+
 export {register, 
         login, 
         logout, 
         getProfile, 
         forgotPassword, 
         resetPassword, 
-        changePassword
+        changePassword,
+        updateUser
     };
