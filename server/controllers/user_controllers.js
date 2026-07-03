@@ -4,7 +4,6 @@ import cloudinary from 'cloudinary';
 import fs from 'fs';
 import sendEmail from '../untils/sendEmail.js';
 import crypto from 'crypto';
-import { constants } from "zlib";
 
 const cookieOptions = {
     maxAge: 7*24*60*60*1000, //7 days
