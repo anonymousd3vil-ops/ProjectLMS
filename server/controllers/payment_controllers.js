@@ -106,12 +106,28 @@ const cancelSubscription = async (req, res, next) =>{
     
         await user.save();
     }catch(err){
-        return(next(new AppError(`Error occured in cancelling subscription: ${err.message}`, 400)))
+        return(next(new AppError(`Error occured in cancelling subscription: ${err.message}`, 400)));
     }
 }
 
 const allPayments = async (req, res, next) =>{
+    try{
+        const {count} = req.query;
 
+        const subscriptions = await razorpay.subscriptions.all({
+            count: count || 10
+        });
+
+        res.status(200).json({
+            success: true,
+            message: 'All payment record',
+            subscriptions
+        });
+
+        // console.log(subscriptions);
+    }catch(err){
+        return(next(new AppError(`Error occured in Fetching All subscriptions: ${err.message}`, 400)))
+    }
 }
 
 export {
