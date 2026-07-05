@@ -17,5 +17,13 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    plugins: ['react-refresh', 'simple-import-sort'],
+    rules: {
+      'simple-import-sort/imports': 'error',
+      'react-refresh/only-export-components': [
+        'warn',
+        {allowConstantExport: true},
+      ],
+    },
   },
 ])
