@@ -1,15 +1,15 @@
 //css
+import { Routes } from 'react-router-dom';
 import './styles/style.css'
 
-//Libraries
-import dotenv from 'dotenv';
-dotenv.config();
 
 function App() {
 
   return (
     <>
-      
+      <Routes>
+        
+      </Routes>
     </>
   )
 }
