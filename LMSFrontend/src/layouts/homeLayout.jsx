@@ -3,7 +3,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { Link, useNavigate } from "react-router-dom";
 import {useSelector, useDispatch } from 'react-redux'
 
-import Footer from '../components/footer/footer.jsx'
+import Footer from '../components/footer.jsx'
 
 function HomeLayout({children}) {
 
