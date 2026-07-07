@@ -9,6 +9,7 @@ import HomePage from './pages/homePage.jsx'
 import AboutUs from './pages/aboutus.jsx'
 import NotFound from './pages/notFound.jsx'
 import SignUp from './pages/signUp.jsx'
+import Login from './pages/login.jsx'
 
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path='/' element={<HomePage/>}> </Route>
         <Route path='/about' element={<AboutUs />}> </Route> 
         <Route path='/signup' element={<SignUp />}> </Route>
+        <Route path='/login' element={<Login />}> </Route>
         
         <Route path='*' element={<NotFound />}></Route>
       </Routes>
