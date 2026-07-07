@@ -12,6 +12,7 @@ import SignUp from './pages/signUp.jsx'
 import Login from './pages/login.jsx'
 import CourseList from './pages/courses/courseList.jsx'
 import ContactUs from './pages/contactUs.jsx'
+import AccessDenied from './pages/denied.jsx'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path='/login' element={<Login />}> </Route>
         <Route path='/courses' element={<CourseList />}> </Route>
         <Route path='/contact' element={<ContactUs />}> </Route>
+        <Route path='/denied' element={<AccessDenied />}> </Route>
 
         
         <Route path='*' element={<NotFound />}></Route>

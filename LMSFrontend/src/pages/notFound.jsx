@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-// import { Home, ArrowLeft } from "lucide-react";
+import { FaArrowLeft, FaHome } from "react-icons/fa";
 
 function NotFound() {
     const navigate = useNavigate();
@@ -26,18 +26,21 @@ function NotFound() {
                 <div className="flex flex-col md:flex-row items-center justify-center gap-4 m-10">
 
                     <button
-                        onClick={() => navigate("/")}
-                        className="bg-yellow-500 font-bold text-xl hover:bg-yellow-600 btn rounded-lg btn-wide transition-all ease-in-out duration-300"
-                    >
-                        Go Home
-                    </button>
-
-                    <button
                         onClick={() => navigate(-1)}
                         className="btn border border-yellow-500 font-bold text-xl hover:bg-yellow-500 btn-wide text-white transition-all ease-in-out duration-300"
                     >
+                        <FaArrowLeft/>
                         Previous Page
                     </button>
+
+                    <button
+                        onClick={() => navigate("/")}
+                        className="bg-yellow-500 font-bold text-xl hover:bg-yellow-600 btn rounded-lg btn-wide transition-all ease-in-out duration-300"
+                    >
+                        <FaHome />
+                        Go Home
+                    </button>
+
 
                 </div>
             </div>
