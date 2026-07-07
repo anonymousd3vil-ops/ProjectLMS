@@ -4,8 +4,8 @@ import HomeLayout from "../layouts/homeLayout.jsx";
 function HomePage(){
     return (
         <HomeLayout>    
-            <div className=" text-white flex items-center justify-center gap-10 mx-10 h-[90vh]">
-                <div className="w-1/2 space-y-6">
+            <div className=" text-white flex items-center justify-center gap-10 h-[90vh] min-h-screen bg-linear-to-br from-[#020716] via-[#081122] to-[#0f172a] p-4">
+                <div className="w-1/2 space-y-6 mx-10">
                     <h1 className="text-5xl font-semibold">
                         Findout Best <span className="text-yellow-500 font-bold">Online Courses</span>
                     </h1>

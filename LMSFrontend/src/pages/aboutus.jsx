@@ -7,7 +7,7 @@ function AboutUs(){
     return (
         <HomeLayout>
             <title>About Us</title>
-            <div className="pt-20 flex flex-col text-white items-center">
+            <div className="pt-20 flex flex-col text-white items-center bg-linear-to-br from-[#020716] via-[#081122] to-[#0f172a]">
                 <div className="flex flex-col md:flex-row items-center gap-5 md:mx-20">
                     <section className="w-1/2 space-y-10">
                         <h1 className="text-5xl text-yellow-500 font-semibold">
@@ -27,7 +27,7 @@ function AboutUs(){
                     </div>
                 </div>
                 <div className="carousel w-[60%] my-10 rounded-4xl">
-                    {celebrities.map( (celebrity) => <CarouselSlides name={celebrity.name} quote={celebrity.quote} image={celebrity.image} slideNumber={celebrity.slideNumber} totalSlides={celebrities.length}/> )}
+                    {celebrities.map( (celebrity) => <CarouselSlides key={celebrity.slideNumber} name={celebrity.name} quote={celebrity.quote} image={celebrity.image} slideNumber={celebrity.slideNumber} totalSlides={celebrities.length}/> )}
                 </div>
             </div>
         </HomeLayout>
