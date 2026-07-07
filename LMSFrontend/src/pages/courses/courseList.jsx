@@ -20,10 +20,10 @@ function CourseList(){
     return (
         <HomeLayout>
             <div className="pt-20 min-h-[90vh] flex flex-col text-white items-center bg-linear-to-br from-[#020716] via-[#081122] to-[#0f172a]">
-                <h1 className="text-3xl font-bold mb-4">
+                <h1 className="text-3xl font-bold mx-4">
                     Explore the courses made by<span className="text-4xl font-extrabold text-yellow-500"> Industry experts </span>
                 </h1>
-                <div className="flex flex-wrap">
+                <div className="flex flex-wrap items-center justify-center my-10">
                     {courseData?.map((element) => {
                         return <CourseCard key={element._id} data={element}/>
                     })}
