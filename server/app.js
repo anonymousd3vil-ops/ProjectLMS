@@ -7,6 +7,7 @@ import userRouter from './routers/user_routers.js';
 import errorMiddleware from './middleware/error_middleware.js';
 import courseRouter from './routers/course_routers.js';
 import paymentRouter from './routers/payment_router.js';
+import miscRouter from './routers/miscellaneous_router.js';
 dotenv.config();
 
 
@@ -28,6 +29,7 @@ app.use(morgan('dev'));
 app.use('/api/v1/user', userRouter);
 app.use('/api/v1/courses', courseRouter);
 app.use('/api/v1/payments', paymentRouter);
+app.use('/api/v1/contact', miscRouter);
 
 app.use('/ping', (req, res) => {
     res.send('Ping Pong Server is Running!!');
