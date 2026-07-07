@@ -82,7 +82,7 @@ function Login(){
                             />
                         </div>
                         <div className="flex md:flex-row flex-col  justify-center md:my-1 w-full md:items-center my-3">
-                            <button type="submit" className="btn rounded-xl text-lg text-black font-bold p-1 w-full py-3 border bg-linear-to-r from-yellow-400 via-yellow-500 to-amber-600 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(234,179,8,0.6)] transition-full duration-300">Register</button>
+                            <button type="submit" className="btn rounded-xl text-lg text-black font-bold p-1 w-full py-3 border bg-linear-to-r from-yellow-400 via-yellow-500 to-amber-600 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(234,179,8,0.6)] transition-full duration-300">Login</button>
                         </div>
                         <p className="text-center text-gray-400 mt-4">
                             Don't have an account?
