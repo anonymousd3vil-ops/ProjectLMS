@@ -28,7 +28,7 @@ function App() {
         <Route path='/login' element={<Login />}> </Route>
 
         <Route path='/courses' element={<CourseList />}> </Route>
-        <Route path='//course/discription' element={<CourseDescription />}> </Route>
+        <Route path='/course/description' element={<CourseDescription />}> </Route>
         
         <Route path='/contact' element={<ContactUs />}> </Route>
         <Route path='/denied' element={<AccessDenied />}> </Route>
