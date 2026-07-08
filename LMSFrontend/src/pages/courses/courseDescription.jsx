@@ -11,16 +11,16 @@ function CourseDescription(){
     return (
         <HomeLayout>
             <title>{state?.title}</title>
-            <div className=" bg-linear-to-br from-[#020716] via-[#081122] to-[#0f172a] min-h-[90vh] pt-12 px-20 flex flex-col items-center justify-center text-white">
+            <div className=" bg-linear-to-br from-[#020716] via-[#081122] to-[#0f172a] min-h-[90vh] pt-12 px-12 flex flex-col items-center justify-center text-white">
                 <div className="grid md:grid-cols-2 gap-10 py-10 relative">
-                    <div className="space-y-5">
+                    <div className="flex flex-col flex-wrap space-y-5">
                         <img 
                             className="w-full h-64 rounded-2xl"
                             src={state?.thumbnail?.secure_url} 
                             alt="Course Thumbnail" 
                         />
-                        <div className="space-y-4 flex justify-between">
-                            <div className="flex flex-col  justify-center text-xl">
+                        <div className="space-y-4 flex justify-between flex-col md:flex-row">
+                            <div className="flex flex-col  justify-center text-xl md:w-1/2 w-full">
                                 <p className="font-semibold">
                                     <span className="text-yellow-500 font-bold">
                                             Total Lectures : {" "}
@@ -34,17 +34,18 @@ function CourseDescription(){
                                     {state?.createdBy}
                                 </p>
                             </div>
-                            {   role === 'ADMIN' || data?.subscription?.status === 'ACTIVE'? (
-                                <button className="btn">
-                                    Watch Lectures
-                                </button>
-                            ) : (
-                                <button className="btn">
-                                    Subscribe
-                                </button>
-                            )
-
-                            }
+                            <div className="md:w-1/2 w-full flex justify-center items-center">
+                                {   role === 'ADMIN' || data?.subscription?.status === 'ACTIVE'? (
+                                    <button className="bg-yellow-500 font-bold text-xl hover:bg-yellow-600 btn rounded-lg btn-wide transition-all ease-in-out duration-300">
+                                        Watch Lectures
+                                    </button>
+                                    ) : (
+                                    <button className="bg-yellow-500 font-bold text-xl hover:bg-yellow-600 btn rounded-lg btn-wide transition-all ease-in-out duration-300">
+                                        Subscribe
+                                    </button>
+                                    )
+                                }
+                            </div>
                         </div>
                     </div>
                     <div className="space-y-2 text-xl">
