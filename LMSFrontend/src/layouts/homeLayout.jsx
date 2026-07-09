@@ -58,16 +58,6 @@ function HomeLayout({children}) {
                   Home
                 </Link>
               </li>
-              
-              {
-                isLoggedIn && role === 'ADMIN' && (
-                  <li className="hover:bg-yellow-500 rounded-lg transition-all ease-in-out duration-300">
-                    <Link to="/admin/dashboard">
-                      Admin Dashboard
-                    </Link>
-                  </li>
-                )
-              }
 
               <li className="hover:bg-yellow-500 rounded-lg transition-all ease-in-out duration-300">
                 <Link to="/courses" onClick={hideDrawer}>
@@ -117,6 +107,26 @@ function HomeLayout({children}) {
                         </button>
                       </Link>
                     </div>
+                )
+              }
+              {
+                isLoggedIn && role === 'ADMIN' && (
+                    <button
+                        onClick={() => navigate('/course/create')}
+                        className="px-4 py-1 my-3 w-full cursor-pointer hover:bg-yellow-600 font-semibold rounded-md bg-yellow-500 transition-all ease-in-out duration-500 bg-yellow-500 font-bold hover:bg-yellow-600 btn w-full rounded-lg h-full transition-all ease-in-out duration-300"
+                    >
+                        Create New Course
+                    </button>
+                )
+              }
+              {
+                isLoggedIn && role === 'ADMIN' && (
+                    <button
+                        onClick={() => navigate('/admin/dashboard')}
+                        className=" px-4 py-1 w-full cursor-pointer hover:bg-yellow-600 font-semibold rounded-md bg-yellow-500 transition-all ease-in-out duration-500 bg-yellow-500 font-bold hover:bg-yellow-600 btn w-full rounded-lg h-full transition-all ease-in-out duration-300"
+                    >
+                        Admin Dashboard
+                    </button>
                 )
               }
           </ul>
