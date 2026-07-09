@@ -35,7 +35,7 @@ function CourseDescription(){
                                 </p>
                             </div>
                             <div className="md:w-1/2 w-full flex justify-center items-center">
-                                {   role === 'ADMIN' || data?.subscription?.status === 'ACTIVE'? (
+                                {   role === 'ADMIN' || data?.subscription?.status === 'active'? (
                                     <button className="bg-yellow-500 font-bold text-xl hover:bg-yellow-600 btn rounded-lg btn-wide transition-all ease-in-out duration-300">
                                         Watch Lectures
                                     </button>
