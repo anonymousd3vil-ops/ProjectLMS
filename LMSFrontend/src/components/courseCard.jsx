@@ -43,7 +43,7 @@ function CourseCard({ data }) {
         </div>
 
         {/* Description */}
-        <p className=" my-2 text-lg text-zinc-300 line-clamp-3">
+        <p className=" my-2 text-lg text-zinc-300 line-clamp-2">
           {data?.description}
         </p>
 
