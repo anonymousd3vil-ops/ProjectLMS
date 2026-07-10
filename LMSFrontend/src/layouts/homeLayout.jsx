@@ -113,7 +113,7 @@ function HomeLayout({children}) {
                 isLoggedIn && role === 'ADMIN' && (
                     <button
                         onClick={() => navigate('/course/create')}
-                        className="px-4 py-1 my-3 w-full cursor-pointer hover:bg-yellow-600 font-semibold rounded-md bg-yellow-500 transition-all ease-in-out duration-500 bg-yellow-500 font-bold hover:bg-yellow-600 btn w-full rounded-lg h-full transition-all ease-in-out duration-300"
+                        className="px-4 py-1 my-3  cursor-pointer bg-yellow-500 font-bold hover:bg-yellow-600 btn w-full rounded-lg h-full transition-all ease-in-out duration-300"
                     >
                         Create New Course
                     </button>
@@ -123,7 +123,7 @@ function HomeLayout({children}) {
                 isLoggedIn && role === 'ADMIN' && (
                     <button
                         onClick={() => navigate('/admin/dashboard')}
-                        className=" px-4 py-1 w-full cursor-pointer hover:bg-yellow-600 font-semibold rounded-md bg-yellow-500 transition-all ease-in-out duration-500 bg-yellow-500 font-bold hover:bg-yellow-600 btn w-full rounded-lg h-full transition-all ease-in-out duration-300"
+                        className=" px-4 py-1 cursor-pointer   bg-yellow-500 font-bold hover:bg-yellow-600 btn w-full rounded-lg h-full transition-all ease-in-out duration-300"
                     >
                         Admin Dashboard
                     </button>

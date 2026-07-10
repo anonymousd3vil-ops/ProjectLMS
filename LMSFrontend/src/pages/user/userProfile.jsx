@@ -9,7 +9,7 @@ function UserProfile(){
     const navigate = useNavigate();
 
     const userData = useSelector((state) => state?.auth?.data);
-    console.log(userData);
+    // console.log(userData);
     return (
         <HomeLayout>
             <title>Profile</title>
