@@ -260,49 +260,55 @@ const changePassword = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
     const {fullName} = req.body;
 
-    const {id} = req.user.id;
+    const {id} = req.params;
 
-    const user = await User.findById(id);
-
-    if(!user){
-        return next(new AppError("User Dosen't Exists!!", 400));
-    }
-
-    if(req.fullName){
-        user.fullName = fullName;
-    }
-
-    if(req.file){
-        await cloudinary.v2.uploader.destroy(user.avatr.public_id);
-
-        try{
-            const result = await cloudinary.v2.uploader.upload(req.file.path, {
-                folder: 'lms',
-                width: 250,
-                height: 250,
-                gravity: 'faces',
-                crop: 'fill'
-            })
-        
-            if(result){
-                user.avatar.public_id = result.public_id;
-                user.avatar.secure_url = result.secure_url;
-                
-                //remove file from server, because it is stored on the third party server
-                // fs.rm(`uploads/${req.file.filename}`);
-                await fs.promises.rm(`uploads/${req.file.filename}`);
-            }
-
-        }catch(err){
-            console.log("Error in Avatar Upload: ", err.message);
-            return(new AppError("Profile Picture Upload Unsuccessfull..", 500));
+    try{
+        const user = await User.findById(id);
+    
+        if(!user){
+            return next(new AppError("User Dosen't Exists!!", 400));
         }
+    
+        if(fullName){
+            user.fullName = fullName;
+        }
+    
+        if(req.file){
+            if(user.avatar?.public_id){
+                await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+            }
+    
+            try{
+                const result = await cloudinary.v2.uploader.upload(req.file.path, {
+                    folder: 'lms',
+                    width: 250,
+                    height: 250,
+                    gravity: 'faces',
+                    crop: 'fill'
+                })
+            
+                if(result){
+                    user.avatar.public_id = result.public_id;
+                    user.avatar.secure_url = result.secure_url;
+                    
+                    //remove file from server, because it is stored on the third party server
+                    // fs.rm(`uploads/${req.file.filename}`);
+                    await fs.promises.rm(`uploads/${req.file.filename}`);
+                }
+    
+            }catch(err){
+                return(new AppError("Profile Picture Upload Unsuccessfull..", 500));
+            }
+        }
+        await user.save();
+        res.status(200).json({
+            success: true,
+            message: 'User Details Updated Succesfull!!'
+        })
+    } catch(err){
+        return(new AppError("Failed to update User Details", 500));
     }
-    await user.save();
-    res.status(200).json({
-        success: true,
-        message: 'User Details Updated Succesfull!!'
-    })
+
 }
 
 export {register, 
