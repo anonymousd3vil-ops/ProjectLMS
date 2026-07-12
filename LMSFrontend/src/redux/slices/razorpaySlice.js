@@ -111,3 +111,5 @@ const razorpaySlice = createSlice({
         });
     }
 });
+
+export default razorpaySlice.reducer
