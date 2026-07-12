@@ -3,7 +3,7 @@
 
 //Libraries
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axiosInstance from "../../helpers/axiosInstance";
+import axiosInstance from "../../helpers/axiosInstance.js";
 import toast from "react-hot-toast";
 
 function getStoredUserData() {
