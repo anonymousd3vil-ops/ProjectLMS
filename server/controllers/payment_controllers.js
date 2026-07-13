@@ -1,3 +1,4 @@
+import Payment from '../models/payment_Schema.js';
 import User from '../models/user_Schema.js';
 import { razorpay } from '../server.js';
 import AppError from '../untils/error_utils.js';
@@ -38,7 +39,7 @@ const buySubscription = async (req, res, next) =>{
         res.status(200).json({
             success: true,
             message: 'Subscribed Succesfully',
-            subscription_id: subscription.id
+            subscriptionId: subscription.id
         })
     }catch(err){
         return next(new AppError(`Error occured in byuing subscription: ${err.message}`, 400));
@@ -49,25 +50,31 @@ const verifySubscription = async (req, res, next) =>{
     try{
         const {id} = req.user;
         const {razorpayPaymentId, razorpaySignature, razorpaySubscriptionId} = req.body;
-    
+        
+        console.log("Payment Id: ", razorpayPaymentId, "Signature: ", razorpaySignature, "Subscription: ", razorpaySubscriptionId)
+
         const user = await User.findById(id);
     
         if(!user){
             return next(new AppError('User Not Found.', 400));
         }
-    
+        
         const subscriptionId = user.subscription.id;
-    
+        
+        if (razorpaySubscriptionId !== subscriptionId) {
+            return next(new AppError("Invalid subscription.", 400));
+        }
+
         const generateSignature = crypto
             .createHmac('sha256', process.env.RAZORPAY_SECRET_KEY)
             .update(`${razorpayPaymentId}|${razorpaySubscriptionId}`)
             .digest('hex');
     
         if(generateSignature !== razorpaySignature){
-            return (new AppError('Payment not verified, Try Again!!', 500));
+            return next(new AppError('Payment not verified, Try Again!!', 400));
         }
     
-        await Payment.cerate({
+        await Payment.create({
             razorpayPaymentId,
             razorpaySignature,
             razorpaySubscriptionId
@@ -106,6 +113,12 @@ const cancelSubscription = async (req, res, next) =>{
         user.subscription.status = subscription.status;
     
         await user.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Subscription Cancelled"
+        });
+
     }catch(err){
         return(next(new AppError(`Error occured in cancelling subscription: ${err.message}`, 400)));
     }
