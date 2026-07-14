@@ -21,7 +21,7 @@ const buySubscription = async (req, res, next) =>{
             return next(new AppError('User Not Found.', 400));
         }
     
-        if(user.role == 'ADMIN'){
+        if(user.role === 'ADMIN'){
             return next(new AppError('ADMIN pannot purchase a Subscription.', 400));
         }
     
@@ -102,7 +102,7 @@ const cancelSubscription = async (req, res, next) =>{
             return next(new AppError('User Not Found.', 400));
         }
     
-        if(user.role == 'ADMIN'){
+        if(user.role === 'ADMIN'){
             return next(new AppError('ADMIN pannot purchase a Subscription.', 400));
         }
     
