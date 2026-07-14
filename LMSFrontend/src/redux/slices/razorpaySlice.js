@@ -6,10 +6,10 @@ import toast from 'react-hot-toast';
 const initialState = {
     key: '',
     subscriptionId: '',
-    isPaymentVarified: {},
+    isPaymentVerified: false,
     finalMonth: {},
     monthlySalesRecord: [],
-    allPayments: {}
+    allPayments: []
 }
 
 export const getRazorpayId = createAsyncThunk('/razorpay/getId', async () => {
@@ -22,29 +22,32 @@ export const getRazorpayId = createAsyncThunk('/razorpay/getId', async () => {
     }
 });
 
-export const purchaseCourseBundel = createAsyncThunk('/purchaseCourse', async () => {
-    try{
-        const response = await axiosInstance.post('/payments/subscribe');
-        return response.data;
+export const purchaseCourseBundle = createAsyncThunk(
+   '/purchaseCourse',
+   async(_, {rejectWithValue})=>{
+      try{
+         const response = await axiosInstance.post('/payments/subscribe');
+         return response.data;
+      }catch(err){
+         return rejectWithValue(
+             err?.response?.data?.message
+         );
+      }
+   }
+);
 
-    }catch(err){
-        toast.error(err?.response?.data?.message);
+export const verifyUserPayment = createAsyncThunk("/payment/verify", 
+    async (data, { rejectWithValue }) => {
+    try {
+      const response = await axiosInstance.post("/payments/verify", data);
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(
+        err?.response?.data?.message || "Payment verification failed"
+      );
     }
-});
-
-export const verifyUserPayment = createAsyncThunk('/payment_verify', async (data) => {
-    try{
-        const response = await axiosInstance.post('/payments/verify', {
-            razorpayPaymentId: data.razorpayPaymentId,
-            razorpaySignature: data.razorpaySignature,
-            razorpaySubscriptionId: data.razorpaySubscriptionId
-        });
-        return response.data;
-
-    }catch(err){
-        toast.error(err?.response?.data?.message);
-    }
-});
+  }
+);
 
 export const getPaymentRecord = createAsyncThunk('/payments/record', async (data) => {
     try{
@@ -93,19 +96,19 @@ const razorpaySlice = createSlice({
         .addCase(getRazorpayId.fulfilled, (state, action) => {
             state.key = action?.payload?.key;
         })
-        .addCase(purchaseCourseBundel.fulfilled, (state, action) => {
+        .addCase(purchaseCourseBundle.fulfilled, (state, action) => {
             state.subscriptionId = action?.payload?.subscriptionId;
         })
         .addCase(verifyUserPayment.fulfilled, (state, action) => {
+            state.isPaymentVerified = action?.payload?.success;
             toast.success(action?.payload?.message);
-            state.isPaymentVarified = action?.payload?.success;
         })
         .addCase(verifyUserPayment.rejected, (state, action) => {
-            toast.success(action?.payload?.message);
-            state.isPaymentVarified = action?.payload?.success;
+            state.isPaymentVerified = false;
+            toast.error(action.payload || "Payment verification failed");
         })
         .addCase(getPaymentRecord.fulfilled, (state, action) => {
-            state.allPayments = action?.payload?.allPayments;
+            state.allPayments = action.payload?.subscriptions || [];
             state.finalMonth = action?.payload?.finalMonth;
             state.monthlySalesRecord = action?.payload?.monthlySalesRecord
         });

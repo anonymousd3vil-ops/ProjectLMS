@@ -37,7 +37,7 @@ function Login(){
         const response = await dispach(login(loginData));
 
         if(response?.payload?.success){
-            navigate('/');
+            navigate(-1);
         }
 
         setLoginData({
