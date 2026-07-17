@@ -12,13 +12,13 @@ function CheckoutSuccess(){
 
     useEffect(() => {
         dispatch(getUserData());
-    })
+    });
 
     return (
         <HomeLayout>
             <div className="h-screen min-h-screen bg-linear-to-br from-[#020716] via-[#081122] to-[#0f172a] flex items-center justify-center p-4">
                 <div className="flex flex-col justify-center items-center p-4 gap-3 text-white w-1/3 backdrop-blur-xl bg-white/5 border border-yellow-500/20 rounded-3xl shadow-[0_0_40px_rgba(234,179,8,0.2)]">
-                    <h1 className="w-full text-center underline text-2xl font-bold">Payment failed</h1>
+                    <h1 className="w-full text-center underline text-2xl font-bold">Payment Successfull</h1>
 
     
                    
@@ -26,7 +26,7 @@ function CheckoutSuccess(){
                         Your payment is succesfull
                     </p>
                     <p className="text-left">
-                        Now, youcan start your learning experience
+                        Now, you can start your learning experience
                     </p>
 
                     

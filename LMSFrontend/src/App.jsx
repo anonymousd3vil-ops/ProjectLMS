@@ -21,6 +21,7 @@ import EditProfile from './pages/user/editProfile.jsx'
 import Checkout from './pages/payments/checkout.jsx'
 import CheckoutFailure from './pages/payments/checkoutFailed.jsx'
 import CheckoutSuccess from './pages/payments/checkoutSuccess.jsx'
+import CancelSubscription from './pages/payments/cancelSubscription.jsx'
 
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
           <Route path='/checkout' element={<Checkout />} ></Route>
           <Route path='/checkout/success' element={<CheckoutSuccess />} />
           <Route path='/checkout/fail' element={<CheckoutFailure />} />
+          <Route path='/checkout/cancelsubscription' element={<CancelSubscription />} />
         </Route>
         
         <Route path='*' element={<NotFound />}></Route>

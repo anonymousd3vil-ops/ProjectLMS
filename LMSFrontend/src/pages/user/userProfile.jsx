@@ -60,7 +60,7 @@ function UserProfile(){
                         userData?.subscription?.status === 'active' && (  
                             <div className="w-full flex justify-center gap-2">
                                 <button
-                                    onClick={() => navigate('/user/cancelsubscription')} 
+                                    onClick={() => navigate('/checkout/cancelsubscription')} 
                                     className="btn w-full bg-red-500 font-bold text-xl hover:bg-red-600 rounded-lg  transition-all ease-in-out duration-300">
                                     Cancel Subscription
                                 </button>
